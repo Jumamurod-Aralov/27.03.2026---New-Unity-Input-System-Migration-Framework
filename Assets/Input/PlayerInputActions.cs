@@ -44,6 +44,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CycleCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8834375-5834-41cb-9cb6-dc19560684a1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExitHack"",
+                    ""type"": ""Button"",
+                    ""id"": ""1538ae89-b461-4baa-aac9-e2d2c05d137d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -165,6 +183,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8e73ce1-81b8-44f8-b56e-5141b10c0176"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CycleCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d90837d6-3e8d-4037-91c9-bb1726bb0f6d"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitHack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -593,6 +633,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_CycleCamera = m_Player.FindAction("CycleCamera", throwIfNotFound: true);
+        m_Player_ExitHack = m_Player.FindAction("ExitHack", throwIfNotFound: true);
         // DroneControls
         m_DroneControls = asset.FindActionMap("DroneControls", throwIfNotFound: true);
         m_DroneControls_Move = m_DroneControls.FindAction("Move", throwIfNotFound: true);
@@ -669,12 +711,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_CycleCamera;
+    private readonly InputAction m_Player_ExitHack;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @CycleCamera => m_Wrapper.m_Player_CycleCamera;
+        public InputAction @ExitHack => m_Wrapper.m_Player_ExitHack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -690,6 +736,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @CycleCamera.started += instance.OnCycleCamera;
+            @CycleCamera.performed += instance.OnCycleCamera;
+            @CycleCamera.canceled += instance.OnCycleCamera;
+            @ExitHack.started += instance.OnExitHack;
+            @ExitHack.performed += instance.OnExitHack;
+            @ExitHack.canceled += instance.OnExitHack;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -700,6 +752,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @CycleCamera.started -= instance.OnCycleCamera;
+            @CycleCamera.performed -= instance.OnCycleCamera;
+            @CycleCamera.canceled -= instance.OnCycleCamera;
+            @ExitHack.started -= instance.OnExitHack;
+            @ExitHack.performed -= instance.OnExitHack;
+            @ExitHack.canceled -= instance.OnExitHack;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -869,6 +927,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnCycleCamera(InputAction.CallbackContext context);
+        void OnExitHack(InputAction.CallbackContext context);
     }
     public interface IDroneControlsActions
     {
