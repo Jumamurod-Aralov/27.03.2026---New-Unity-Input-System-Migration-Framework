@@ -64,10 +64,19 @@ namespace Game.Scripts.LiveObjects
                 // Subscribe to input callbacks
                 if (_moveAction != null)
                     _moveAction.performed += OnMovePerformed;
+
                 if (_liftUpAction != null)
-                    _liftUpAction.performed += OnLiftUpPerformed;
+                {
+                    _liftUpAction.started += OnLiftUpStarted;
+                    _liftUpAction.canceled += OnLiftUpCanceled;
+                }
+
                 if (_liftDownAction != null)
-                    _liftDownAction.performed += OnLiftDownPerformed;
+                {
+                    _liftDownAction.started += OnLiftDownStarted;
+                    _liftDownAction.canceled += OnLiftDownCanceled;
+                }
+
                 if (_exitAction != null)
                     _exitAction.performed += OnExitPerformed;
             }
@@ -140,16 +149,28 @@ namespace Game.Scripts.LiveObjects
             _moveInput = context.ReadValue<Vector2>();
         }
 
-        // NEW - Input callback for LiftUp action (R)
-        private void OnLiftUpPerformed(InputAction.CallbackContext context)
+        // NEW - Input callback for LiftUp action (R) - started
+        private void OnLiftUpStarted(InputAction.CallbackContext context)
         {
-            _liftUpInput = context.ReadValue<float>();
+            _liftUpInput = 1f;
         }
 
-        // NEW - Input callback for LiftDown action (T)
-        private void OnLiftDownPerformed(InputAction.CallbackContext context)
+        // NEW - Input callback for LiftUp action (R) - canceled
+        private void OnLiftUpCanceled(InputAction.CallbackContext context)
         {
-            _liftDownInput = context.ReadValue<float>();
+            _liftUpInput = 0f;
+        }
+
+        // NEW - Input callback for LiftDown action (T) - started
+        private void OnLiftDownStarted(InputAction.CallbackContext context)
+        {
+            _liftDownInput = 1f;
+        }
+
+        // NEW - Input callback for LiftDown action (T) - canceled
+        private void OnLiftDownCanceled(InputAction.CallbackContext context)
+        {
+            _liftDownInput = 0f;
         }
 
         // NEW - Input callback for Exit action (Escape)
@@ -190,7 +211,7 @@ namespace Game.Scripts.LiveObjects
         }
         */
 
-        // NEW - Updated lift controls using input values
+        // NEW - Updated lift controls using input values (continuous)
         private void LiftControls()
         {
             if (_liftUpInput > 0)
@@ -219,7 +240,7 @@ namespace Game.Scripts.LiveObjects
                 tempPos.y -= Time.deltaTime * _liftSpeed;
                 _lift.transform.localPosition = new Vector3(tempPos.x, tempPos.y, tempPos.z);
             }
-            else if (_lift.transform.localPosition.y <= _liftUpperLimit.y)
+            else if (_lift.transform.localPosition.y <= _liftLowerLimit.y)
                 _lift.transform.localPosition = _liftLowerLimit;
         }
 
@@ -230,10 +251,19 @@ namespace Game.Scripts.LiveObjects
             // NEW - Unsubscribe from input callbacks
             if (_moveAction != null)
                 _moveAction.performed -= OnMovePerformed;
+
             if (_liftUpAction != null)
-                _liftUpAction.performed -= OnLiftUpPerformed;
+            {
+                _liftUpAction.started -= OnLiftUpStarted;
+                _liftUpAction.canceled -= OnLiftUpCanceled;
+            }
+
             if (_liftDownAction != null)
-                _liftDownAction.performed -= OnLiftDownPerformed;
+            {
+                _liftDownAction.started -= OnLiftDownStarted;
+                _liftDownAction.canceled -= OnLiftDownCanceled;
+            }
+
             if (_exitAction != null)
                 _exitAction.performed -= OnExitPerformed;
         }
