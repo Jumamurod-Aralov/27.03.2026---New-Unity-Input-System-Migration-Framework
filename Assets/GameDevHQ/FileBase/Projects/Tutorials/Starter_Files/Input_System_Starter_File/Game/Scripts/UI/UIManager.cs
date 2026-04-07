@@ -50,4 +50,3 @@ namespace Game.Scripts.UI
         }
     }
 }
-

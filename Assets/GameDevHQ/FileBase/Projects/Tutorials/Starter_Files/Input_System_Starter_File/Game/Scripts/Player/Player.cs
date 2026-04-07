@@ -11,16 +11,12 @@ namespace Game.Scripts.Player
     {
         private CharacterController _controller;
         private Animator _anim;
-        [SerializeField]
-        private float _speed = 5.0f;
+        [SerializeField] private float _speed = 1.0f;
         private bool _playerGrounded;
-        [SerializeField]
-        private Detonator _detonator;
+        [SerializeField] private Detonator _detonator;
         private bool _canMove = true;
-        [SerializeField]
-        private CinemachineVirtualCamera _followCam;
-        [SerializeField]
-        private GameObject _model;
+        [SerializeField] private CinemachineVirtualCamera _followCam;
+        [SerializeField] private GameObject _model;
 
 
         private void OnEnable()

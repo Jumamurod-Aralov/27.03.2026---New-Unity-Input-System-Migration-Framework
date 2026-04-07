@@ -64,12 +64,22 @@ namespace Game.Scripts.LiveObjects
                     // Subscribe to input callbacks
                     if (_moveAction != null)
                         _moveAction.performed += OnMovePerformed;
+
                     if (_rotateAction != null)
                         _rotateAction.performed += OnRotatePerformed;
+
                     if (_thrustAction != null)
-                        _thrustAction.performed += OnThrustPerformed;
+                    {
+                        _thrustAction.started += OnThrustStarted;
+                        _thrustAction.canceled += OnThrustCanceled;
+                    }
+
                     if (_descentAction != null)
-                        _descentAction.performed += OnDescentPerformed;
+                    {
+                        _descentAction.started += OnDescentStarted;
+                        _descentAction.canceled += OnDescentCanceled;
+                    }
+
                     if (_exitAction != null)
                         _exitAction.performed += OnExitPerformed;
                 }
@@ -135,19 +145,31 @@ namespace Game.Scripts.LiveObjects
         // NEW - Input callback for Rotate action (R and T keys)
         private void OnRotatePerformed(InputAction.CallbackContext context)
         {
-            _rotateInput = context.ReadValue<float>(); // Single axis
+            _rotateInput = context.ReadValue<float>();
         }
 
-        // NEW - Input callback for Thrust action (Space)
-        private void OnThrustPerformed(InputAction.CallbackContext context)
+        // NEW - Input callback for Thrust action (Space) - started
+        private void OnThrustStarted(InputAction.CallbackContext context)
         {
-            _thrustInput = context.ReadValue<float>();
+            _thrustInput = 1f;
         }
 
-        // NEW - Input callback for Descent action (V)
-        private void OnDescentPerformed(InputAction.CallbackContext context)
+        // NEW - Input callback for Thrust action (Space) - canceled
+        private void OnThrustCanceled(InputAction.CallbackContext context)
         {
-            _descentInput = context.ReadValue<float>();
+            _thrustInput = 0f;
+        }
+
+        // NEW - Input callback for Descent action (V) - started
+        private void OnDescentStarted(InputAction.CallbackContext context)
+        {
+            _descentInput = 1f;
+        }
+
+        // NEW - Input callback for Descent action (V) - canceled
+        private void OnDescentCanceled(InputAction.CallbackContext context)
+        {
+            _descentInput = 0f;
         }
 
         // NEW - Input callback for Exit action (Escape)
@@ -208,7 +230,7 @@ namespace Game.Scripts.LiveObjects
             }
             */
 
-            // NEW - Use Thrust and Descent inputs from InputActions
+            // NEW - Use Thrust and Descent inputs from InputActions (continuous)
             if (_thrustInput > 0)
             {
                 _rigidbody.AddForce(transform.up * _speed, ForceMode.Acceleration);
@@ -255,12 +277,22 @@ namespace Game.Scripts.LiveObjects
             // NEW - Unsubscribe from input callbacks
             if (_moveAction != null)
                 _moveAction.performed -= OnMovePerformed;
+
             if (_rotateAction != null)
                 _rotateAction.performed -= OnRotatePerformed;
+
             if (_thrustAction != null)
-                _thrustAction.performed -= OnThrustPerformed;
+            {
+                _thrustAction.started -= OnThrustStarted;
+                _thrustAction.canceled -= OnThrustCanceled;
+            }
+
             if (_descentAction != null)
-                _descentAction.performed -= OnDescentPerformed;
+            {
+                _descentAction.started -= OnDescentStarted;
+                _descentAction.canceled -= OnDescentCanceled;
+            }
+
             if (_exitAction != null)
                 _exitAction.performed -= OnExitPerformed;
         }

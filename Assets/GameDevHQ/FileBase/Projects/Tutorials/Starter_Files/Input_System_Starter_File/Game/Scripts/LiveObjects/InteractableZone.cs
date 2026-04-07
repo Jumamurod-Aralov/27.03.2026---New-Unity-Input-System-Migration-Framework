@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Game.Scripts.UI;
+using System.Linq;
 
 
 namespace Game.Scripts.LiveObjects
@@ -90,10 +91,28 @@ namespace Game.Scripts.LiveObjects
             _interactAction.canceled += OnInteractCanceled;
         }
 
+        private string GetKeyBindingText(InputAction action)
+        {
+            if (action == null) return "key";
+
+            if (action.bindings.Count > 0)
+            {
+                var binding = action.bindings[0];
+                string path = binding.effectivePath;
+
+                // Extract the key name from the path
+                string keyName = path.Split('/').Last().ToUpper();
+                return keyName;
+            }
+            return "key";
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player") && _currentZoneID > _requiredID)
             {
+                string keyName = GetKeyBindingText(_interactAction);
+
                 switch (_zoneType)
                 {
                     case ZoneType.Collectable:
@@ -102,11 +121,11 @@ namespace Game.Scripts.LiveObjects
                             _inZone = true;
                             if (_displayMessage != null)
                             {
-                                string message = $"Press the E key to {_displayMessage}.";
+                                string message = $"Press the {keyName} key to {_displayMessage}.";
                                 UIManager.Instance.DisplayInteractableZoneMessage(true, message);
                             }
                             else
-                                UIManager.Instance.DisplayInteractableZoneMessage(true, $"Press the E key to collect");
+                                UIManager.Instance.DisplayInteractableZoneMessage(true, $"Press the {keyName} key to collect");
                         }
                         break;
 
@@ -116,11 +135,11 @@ namespace Game.Scripts.LiveObjects
                             _inZone = true;
                             if (_displayMessage != null)
                             {
-                                string message = $"Press the E key to {_displayMessage}.";
+                                string message = $"Press the {keyName} key to {_displayMessage}.";
                                 UIManager.Instance.DisplayInteractableZoneMessage(true, message);
                             }
                             else
-                                UIManager.Instance.DisplayInteractableZoneMessage(true, $"Press the E key to perform action");
+                                UIManager.Instance.DisplayInteractableZoneMessage(true, $"Press the {keyName} key to perform action");
                         }
                         break;
 
@@ -128,11 +147,11 @@ namespace Game.Scripts.LiveObjects
                         _inZone = true;
                         if (_displayMessage != null)
                         {
-                            string message = $"Hold the E key to {_displayMessage}.";
+                            string message = $"Hold the {keyName} key to {_displayMessage}.";
                             UIManager.Instance.DisplayInteractableZoneMessage(true, message);
                         }
                         else
-                            UIManager.Instance.DisplayInteractableZoneMessage(true, $"Hold the E key to perform action");
+                            UIManager.Instance.DisplayInteractableZoneMessage(true, $"Hold the {keyName} key to perform action");
                         break;
                 }
             }

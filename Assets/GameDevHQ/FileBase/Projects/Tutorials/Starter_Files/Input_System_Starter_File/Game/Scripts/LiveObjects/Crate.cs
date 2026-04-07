@@ -81,7 +81,7 @@ namespace Game.Scripts.LiveObjects
             _brakeOff.AddRange(_pieces);
         }
 
-        // NEW - Input callback for PunchCrate action (F key) - pressed
+        // NEW - Input callback for PunchCrate action (E key) - pressed
         private void OnPunchCratePerformed(InputAction.CallbackContext context)
         {
             if (_inCrateZone && _isReadyToBreak && _brakeOff.Count > 0)
@@ -90,7 +90,7 @@ namespace Game.Scripts.LiveObjects
             }
         }
 
-        // NEW - Input callback for PunchCrate action (F key) - released
+        // NEW - Input callback for PunchCrate action (E key) - released
         private void OnPunchCrateCanceled(InputAction.CallbackContext context)
         {
             if (_inCrateZone && _isReadyToBreak && _brakeOff.Count > 0)
@@ -98,7 +98,7 @@ namespace Game.Scripts.LiveObjects
                 float holdDurationTime = Time.time - _holdStartTime;
 
                 // Determine force multiplier based on hold duration
-                float forceMultiplier = holdDurationTime >= _holdDuration ? _holdForceMultiplier : 1f;
+                float forceMultiplier = holdDurationTime >= _holdDuration ? _holdForceMultiplier : 2f;
 
                 BreakPart(forceMultiplier * _normalForce);
                 StartCoroutine(PunchDelay());
