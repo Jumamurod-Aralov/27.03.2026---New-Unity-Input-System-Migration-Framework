@@ -62,6 +62,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PunchCrate"",
+                    ""type"": ""Button"",
+                    ""id"": ""0748cb20-5a43-4518-98f9-8dbe72ea2341"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -177,8 +186,41 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""d283b442-6370-488f-9afa-ab1275998280"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""b3b136f1-2705-4132-9a07-d547caee73cc"",
                     ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""56af55d9-24e2-4fce-9c2e-0e4e578580e2"",
+                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c80acd0-92a8-48a3-86bc-0ee5e9835e0f"",
+                    ""path"": ""<DualShockGamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -205,6 +247,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ExitHack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""53d06665-185e-48c2-9e57-47107df992d0"",
+                    ""path"": ""<XInputController>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitHack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba9636b6-cd49-4ca6-a184-92a4e0ae2e0c"",
+                    ""path"": ""<DualShockGamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitHack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""34f8929c-178b-415a-86c1-c381d7f04ab3"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PunchCrate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -372,6 +447,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": """",
+                    ""id"": ""c1b37a0f-d276-4ed1-84fc-92a5658d9e67"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
                     ""name"": ""1D Axis"",
                     ""id"": ""4f069668-3fbe-455c-9e21-b063753a034a"",
                     ""path"": ""1DAxis"",
@@ -406,8 +492,30 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""191ee132-8f79-458b-b108-d3c93d52c3fe"",
+                    ""path"": ""<XInputController>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""73142756-d2ba-43ea-a067-48a1faf8d19f"",
                     ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Thrust"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75b135ac-b97b-498f-b28d-f7dc983e2d09"",
+                    ""path"": ""<XInputController>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -428,8 +536,41 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""14a43d16-df2d-459e-8b52-783df82ee018"",
+                    ""path"": ""<XInputController>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Descent"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""2993e626-c9ba-4b12-8e78-3d9d145f19e6"",
                     ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e2c1e083-6899-4889-bc22-ff0502298045"",
+                    ""path"": ""<DualShockGamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a185f94a-2610-43b1-8cac-4771733b839e"",
+                    ""path"": ""<XInputController>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -593,8 +734,41 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""e3593ccc-ef06-451a-9e72-9baee752befe"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""fc8ea210-3182-4977-ba90-3fa7d19ed4f8"",
                     ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LiftUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e14a0f7e-72e2-452c-bee3-69584e9c67c3"",
+                    ""path"": ""<DualShockGamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LiftUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""648f1409-7546-4e23-9251-b7dd5d28c73b"",
+                    ""path"": ""<XInputController>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -615,8 +789,52 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""d5259f1f-65a4-4b72-a077-b3ce68b3bfbd"",
+                    ""path"": ""<DualShockGamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LiftDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d921e5f-3cb3-488b-8d73-6dad4e0edd77"",
+                    ""path"": ""<XInputController>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LiftDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""a8c95b8f-4462-4400-ab2b-3d6b2c0b66db"",
                     ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e646eb66-47f0-48f6-9cd3-206f0fe91424"",
+                    ""path"": ""<DualShockGamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d7424df-af10-403a-afbd-92ac09d63d3a"",
+                    ""path"": ""<XInputController>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -635,6 +853,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_CycleCamera = m_Player.FindAction("CycleCamera", throwIfNotFound: true);
         m_Player_ExitHack = m_Player.FindAction("ExitHack", throwIfNotFound: true);
+        m_Player_PunchCrate = m_Player.FindAction("PunchCrate", throwIfNotFound: true);
         // DroneControls
         m_DroneControls = asset.FindActionMap("DroneControls", throwIfNotFound: true);
         m_DroneControls_Move = m_DroneControls.FindAction("Move", throwIfNotFound: true);
@@ -713,6 +932,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_CycleCamera;
     private readonly InputAction m_Player_ExitHack;
+    private readonly InputAction m_Player_PunchCrate;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -721,6 +941,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @CycleCamera => m_Wrapper.m_Player_CycleCamera;
         public InputAction @ExitHack => m_Wrapper.m_Player_ExitHack;
+        public InputAction @PunchCrate => m_Wrapper.m_Player_PunchCrate;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -742,6 +963,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ExitHack.started += instance.OnExitHack;
             @ExitHack.performed += instance.OnExitHack;
             @ExitHack.canceled += instance.OnExitHack;
+            @PunchCrate.started += instance.OnPunchCrate;
+            @PunchCrate.performed += instance.OnPunchCrate;
+            @PunchCrate.canceled += instance.OnPunchCrate;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -758,6 +982,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ExitHack.started -= instance.OnExitHack;
             @ExitHack.performed -= instance.OnExitHack;
             @ExitHack.canceled -= instance.OnExitHack;
+            @PunchCrate.started -= instance.OnPunchCrate;
+            @PunchCrate.performed -= instance.OnPunchCrate;
+            @PunchCrate.canceled -= instance.OnPunchCrate;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -929,6 +1156,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnCycleCamera(InputAction.CallbackContext context);
         void OnExitHack(InputAction.CallbackContext context);
+        void OnPunchCrate(InputAction.CallbackContext context);
     }
     public interface IDroneControlsActions
     {
