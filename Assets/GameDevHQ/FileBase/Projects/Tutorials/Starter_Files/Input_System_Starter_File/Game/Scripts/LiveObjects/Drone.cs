@@ -61,13 +61,7 @@ namespace Game.Scripts.LiveObjects
                     _descentAction = _droneControlsMap.FindAction("Descent");
                     _exitAction = _droneControlsMap.FindAction("Exit");
 
-                    // Subscribe to input callbacks
-                    if (_moveAction != null)
-                        _moveAction.performed += OnMovePerformed;
-
-                    if (_rotateAction != null)
-                        _rotateAction.performed += OnRotatePerformed;
-
+                    // Subscribe to input callbacks for Thrust and Descent (these need started/canceled)
                     if (_thrustAction != null)
                     {
                         _thrustAction.started += OnThrustStarted;
@@ -136,18 +130,6 @@ namespace Game.Scripts.LiveObjects
                 CalculateMovementFixedUpdate();
         }
 
-        // NEW - Input callback for Move action (WASD)
-        private void OnMovePerformed(InputAction.CallbackContext context)
-        {
-            _moveInput = context.ReadValue<Vector2>();
-        }
-
-        // NEW - Input callback for Rotate action (R and T keys)
-        private void OnRotatePerformed(InputAction.CallbackContext context)
-        {
-            _rotateInput = context.ReadValue<float>();
-        }
-
         // NEW - Input callback for Thrust action (Space) - started
         private void OnThrustStarted(InputAction.CallbackContext context)
         {
@@ -185,30 +167,17 @@ namespace Game.Scripts.LiveObjects
 
         private void CalculateMovementUpdate()
         {
-            // OLD CODE - Commented out for legacy reference
-            /*
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                var tempRot = transform.localRotation.eulerAngles;
-                tempRot.y -= _speed / 3;
-                transform.localRotation = Quaternion.Euler(tempRot);
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                var tempRot = transform.localRotation.eulerAngles;
-                tempRot.y += _speed / 3;
-                transform.localRotation = Quaternion.Euler(tempRot);
-            }
-            */
+            // Read rotation input EVERY frame (LEFT/RIGHT ARROWS ONLY)
+            _rotateInput = _rotateAction.ReadValue<float>();
 
-            // NEW - Use Rotate input (R = negative, T = positive on Y axis)
-            if (_rotateInput < 0) // R key - rotate left
+            // LEFT/RIGHT ARROW KEYS - Rotate Y axis only
+            if (_rotateInput < 0) // Left Arrow - rotate left
             {
                 var tempRot = transform.localRotation.eulerAngles;
                 tempRot.y -= _speed / 3;
                 transform.localRotation = Quaternion.Euler(tempRot);
             }
-            if (_rotateInput > 0) // T key - rotate right
+            if (_rotateInput > 0) // Right Arrow - rotate right
             {
                 var tempRot = transform.localRotation.eulerAngles;
                 tempRot.y += _speed / 3;
@@ -218,19 +187,7 @@ namespace Game.Scripts.LiveObjects
 
         private void CalculateMovementFixedUpdate()
         {
-            // OLD CODE - Commented out for legacy reference
-            /*
-            if (Input.GetKey(KeyCode.Space))
-            {
-                _rigidbody.AddForce(transform.up * _speed, ForceMode.Acceleration);
-            }
-            if (Input.GetKey(KeyCode.V))
-            {
-                _rigidbody.AddForce(-transform.up * _speed, ForceMode.Acceleration);
-            }
-            */
-
-            // NEW - Use Thrust and Descent inputs from InputActions (continuous)
+            // Space = Ascend, V = Descend (continuous)
             if (_thrustInput > 0)
             {
                 _rigidbody.AddForce(transform.up * _speed, ForceMode.Acceleration);
@@ -243,31 +200,53 @@ namespace Game.Scripts.LiveObjects
 
         private void CalculateTilt()
         {
-            // OLD CODE - Commented out for legacy reference
-            /*
-            if (Input.GetKey(KeyCode.A)) 
-                transform.rotation = Quaternion.Euler(00, transform.localRotation.eulerAngles.y, 30);
-            else if (Input.GetKey(KeyCode.D))
-                transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, -30);
-            else if (Input.GetKey(KeyCode.W))
-                transform.rotation = Quaternion.Euler(30, transform.localRotation.eulerAngles.y, 0);
-            else if (Input.GetKey(KeyCode.S))
-                transform.rotation = Quaternion.Euler(-30, transform.localRotation.eulerAngles.y, 0);
-            else 
-                transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, 0);
-            */
+            // Read WASD movement input EVERY frame
+            _moveInput = _moveAction.ReadValue<Vector2>();
 
-            // NEW - Use Move input from InputAction (WASD)
-            if (_moveInput.x < 0) // A key
-                transform.rotation = Quaternion.Euler(00, transform.localRotation.eulerAngles.y, 30);
-            else if (_moveInput.x > 0) // D key
-                transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, -30);
-            else if (_moveInput.y > 0) // W key
-                transform.rotation = Quaternion.Euler(30, transform.localRotation.eulerAngles.y, 0);
-            else if (_moveInput.y < 0) // S key
-                transform.rotation = Quaternion.Euler(-30, transform.localRotation.eulerAngles.y, 0);
-            else
-                transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, 0);
+            // Target tilt angles (will return to 0 if no input)
+            float targetX = 0;
+            float targetZ = 0;
+
+            // WASD keys control TILT ONLY (not actual movement)
+            if (_moveInput.x < 0) // A key - tilt left
+            {
+                targetZ = 30;
+            }
+            else if (_moveInput.x > 0) // D key - tilt right
+            {
+                targetZ = -30;
+            }
+
+            if (_moveInput.y > 0) // W key - tilt forward
+            {
+                targetX = 30;
+            }
+            else if (_moveInput.y < 0) // S key - tilt backward
+            {
+                targetX = -30;
+            }
+
+            // Smoothly transition to target tilt rotation
+            var currentRot = transform.localRotation.eulerAngles;
+            float smoothSpeed = 5f;
+
+            // Normalize angles to -180 to 180 range for proper Lerp
+            float currentX = NormalizeAngle(currentRot.x);
+            float currentZ = NormalizeAngle(currentRot.z);
+
+            float newX = Mathf.Lerp(currentX, targetX, Time.deltaTime * smoothSpeed);
+            float newZ = Mathf.Lerp(currentZ, targetZ, Time.deltaTime * smoothSpeed);
+            float newY = currentRot.y; // Y rotation only changes with arrow keys
+
+            transform.localRotation = Quaternion.Euler(newX, newY, newZ);
+        }
+
+        // Helper function to normalize angles to -180 to 180 range
+        private float NormalizeAngle(float angle)
+        {
+            while (angle > 180) angle -= 360;
+            while (angle < -180) angle += 360;
+            return angle;
         }
 
         private void OnDisable()
@@ -275,12 +254,6 @@ namespace Game.Scripts.LiveObjects
             InteractableZone.onZoneInteractionComplete -= EnterFlightMode;
 
             // NEW - Unsubscribe from input callbacks
-            if (_moveAction != null)
-                _moveAction.performed -= OnMovePerformed;
-
-            if (_rotateAction != null)
-                _rotateAction.performed -= OnRotatePerformed;
-
             if (_thrustAction != null)
             {
                 _thrustAction.started -= OnThrustStarted;

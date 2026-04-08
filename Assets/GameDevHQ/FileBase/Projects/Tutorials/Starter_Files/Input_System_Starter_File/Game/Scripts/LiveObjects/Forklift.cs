@@ -61,10 +61,6 @@ namespace Game.Scripts.LiveObjects
                 _liftDownAction = _forkliftControlsMap.FindAction("LiftDown");
                 _exitAction = _forkliftControlsMap.FindAction("Exit");
 
-                // Subscribe to input callbacks
-                if (_moveAction != null)
-                    _moveAction.performed += OnMovePerformed;
-
                 if (_liftUpAction != null)
                 {
                     _liftUpAction.started += OnLiftUpStarted;
@@ -143,12 +139,6 @@ namespace Game.Scripts.LiveObjects
         }
         */
 
-        // NEW - Input callback for Move action (WASD)
-        private void OnMovePerformed(InputAction.CallbackContext context)
-        {
-            _moveInput = context.ReadValue<Vector2>();
-        }
-
         // NEW - Input callback for LiftUp action (R) - started
         private void OnLiftUpStarted(InputAction.CallbackContext context)
         {
@@ -185,6 +175,9 @@ namespace Game.Scripts.LiveObjects
         // NEW - Updated movement calculation using input values
         private void CalcutateMovement()
         {
+            // Read movement input EVERY frame
+            _moveInput = _moveAction.ReadValue<Vector2>();
+
             float h = _moveInput.x; // Horizontal (A/D)
             float v = _moveInput.y; // Vertical (W/S)
 
@@ -247,10 +240,6 @@ namespace Game.Scripts.LiveObjects
         private void OnDisable()
         {
             InteractableZone.onZoneInteractionComplete -= EnterDriveMode;
-
-            // NEW - Unsubscribe from input callbacks
-            if (_moveAction != null)
-                _moveAction.performed -= OnMovePerformed;
 
             if (_liftUpAction != null)
             {
