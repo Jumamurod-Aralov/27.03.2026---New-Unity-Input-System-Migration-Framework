@@ -127,7 +127,9 @@ namespace Game.Scripts.LiveObjects
         {
             _rigidbody.AddForce(transform.up * (9.81f), ForceMode.Acceleration);
             if (_inFlightMode)
+            {
                 CalculateMovementFixedUpdate();
+            }
         }
 
         // NEW - Input callback for Thrust action (Space) - started
@@ -167,10 +169,11 @@ namespace Game.Scripts.LiveObjects
 
         private void CalculateMovementUpdate()
         {
-            // Read rotation input EVERY frame (LEFT/RIGHT ARROWS ONLY)
+            // Read rotation input EVERY frame (ARROW KEYS ONLY)
             _rotateInput = _rotateAction.ReadValue<float>();
 
-            // LEFT/RIGHT ARROW KEYS - Rotate Y axis only
+            // LEFT/RIGHT ARROW KEYS - Rotate Y axis only (SPIN IN PLACE)
+            // NO TILT - purely yaw rotation
             if (_rotateInput < 0) // Left Arrow - rotate left
             {
                 var tempRot = transform.localRotation.eulerAngles;
@@ -188,6 +191,7 @@ namespace Game.Scripts.LiveObjects
         private void CalculateMovementFixedUpdate()
         {
             // Space = Ascend, V = Descend (continuous)
+            // Only vertical movement with Space/V - no horizontal movement
             if (_thrustInput > 0)
             {
                 _rigidbody.AddForce(transform.up * _speed, ForceMode.Acceleration);
@@ -195,6 +199,17 @@ namespace Game.Scripts.LiveObjects
             if (_descentInput > 0)
             {
                 _rigidbody.AddForce(-transform.up * _speed, ForceMode.Acceleration);
+            }
+
+            // Dampen horizontal velocity when no WASD input to keep drone stable
+            _moveInput = _moveAction.ReadValue<Vector2>();
+            if (_moveInput.magnitude == 0)
+            {
+                // Remove horizontal velocity to keep drone stable
+                Vector3 vel = _rigidbody.velocity;
+                vel.x *= 0.95f; // Dampen X velocity
+                vel.z *= 0.95f; // Dampen Z velocity
+                _rigidbody.velocity = vel;
             }
         }
 
@@ -204,8 +219,8 @@ namespace Game.Scripts.LiveObjects
             _moveInput = _moveAction.ReadValue<Vector2>();
 
             // Target tilt angles (will return to 0 if no input)
-            float targetX = 0;
-            float targetZ = 0;
+            float targetX = 0;  // X axis = forward/backward tilt
+            float targetZ = 0;  // Z axis = left/right tilt
 
             // WASD keys control TILT ONLY (not actual movement)
             if (_moveInput.x < 0) // A key - tilt left
@@ -228,7 +243,7 @@ namespace Game.Scripts.LiveObjects
 
             // Smoothly transition to target tilt rotation
             var currentRot = transform.localRotation.eulerAngles;
-            float smoothSpeed = 5f;
+            float smoothSpeed = 8f; // Increased for faster stabilization when releasing keys
 
             // Normalize angles to -180 to 180 range for proper Lerp
             float currentX = NormalizeAngle(currentRot.x);
@@ -236,7 +251,11 @@ namespace Game.Scripts.LiveObjects
 
             float newX = Mathf.Lerp(currentX, targetX, Time.deltaTime * smoothSpeed);
             float newZ = Mathf.Lerp(currentZ, targetZ, Time.deltaTime * smoothSpeed);
-            float newY = currentRot.y; // Y rotation only changes with arrow keys
+            float newY = currentRot.y; // Y rotation ONLY changes with arrow keys - NEVER modified here
+
+            // Clamp to prevent drift and ensure perfect neutral when close to 0
+            if (Mathf.Abs(newX) < 0.1f) newX = 0f;
+            if (Mathf.Abs(newZ) < 0.1f) newZ = 0f;
 
             transform.localRotation = Quaternion.Euler(newX, newY, newZ);
         }
